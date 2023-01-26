@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: tripviewer
-        image: registryyvc5218.azurecr.io/uehara/tripviewer:latest
+        image: registryyvc5218.azurecr.io/asami/tripviewer:latest
         ports:
         - containerPort: 80
           name: http
