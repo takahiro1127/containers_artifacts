@@ -10,6 +10,8 @@ spec:
     matchLabels:
       app: trip
   template:
+    hostname: trip
+    subdomain: default-subdomain
     metadata:
       labels:
         app: trip
@@ -21,3 +23,19 @@ spec:
         - containerPort: 80
           name: http
           protocol: TCP
+        env:
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: sqlsetting
+              key: username
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sqlsetting
+              key: password
+        - name: SQL_SERVER
+          value: "sqlserveryvc5218.database.windows.net"
+        - name: SQL_DBNAME
+          value: "mydrivingDB"
+# kubectl exec tripviewer-75db4b8cfb-rf886 -c tripviewer –- bash
