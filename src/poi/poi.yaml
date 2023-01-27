@@ -30,10 +30,27 @@ spec:
             secretKeyRef:
               name: sqlsetting
               key: password
+
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: sqlsetting
+              key: username
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sqlsetting
+              key: password
         - name: SQL_SERVER
           value: "sqlserveryvc5218.database.windows.net"
         - name: SQL_DBNAME
           value: "mydrivingDB"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
         resources:
           requests:
             cpu: 100m
@@ -45,7 +62,13 @@ spec:
         - containerPort: 80
           name: http
           protocol: TCP
-
+      volumes:
+      - name: secrets-store01-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "azure-kvname-system-msi"
 ---
 apiVersion: v1
 kind: Service
